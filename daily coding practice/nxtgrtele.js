@@ -32,3 +32,6 @@ function nextGreaterElements(arr) {
 let arr = [6,8,0,1,3];
 let res = nextGreaterElements(arr);
 console.log(res);
+
+
+
