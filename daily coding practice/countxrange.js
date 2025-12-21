@@ -20,6 +20,8 @@
 // 1 ≤ arr[i], x ≤ 106
 // 0 ≤ l ≤ r < arr.size()
 
+// need to remember for any sorted array, count occurences, range queries -> binary search
+
 
 class Solution {
     countOccurrences(arr, queries) {
