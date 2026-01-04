@@ -71,33 +71,58 @@
 
 // console.log(mergeSortedArrays([1,3,5],[2,3,6]));
 
+// this will use 3-pointer 
+// function mergeInPlace(arr1, n, arr2, m) {
+//     let i=n-1;
+//     let j=m-1;
+//     let k=n+m-1;
 
-function mergeInPlace(arr1, n, arr2, m) {
-    let i=n-1;
-    let j=m-1;
-    let k=n+m-1;
+//     while(i>=0 && j>=0){
+//         if(arr1[i] > arr2[j]) {
+//             arr1[k] = arr1[i];
+//             i--;
+//         } else {
+//             arr1[k]=arr2[j];
+//             j--;
+//         }
+//         k--;
+//     }
 
-    while(i>=0 && j>=0){
-        if(arr1[i] > arr2[j]) {
-            arr1[k] = arr1[i];
-            i--;
+//     while(j>=0){
+//         arr1[k]=arr2[j];
+//         j--;
+//         k--;
+//     }
+
+//     return arr1;
+// }
+
+// let arr1 = [2,4,6];
+// let arr2 = [1,2,3,5,0,0,0];
+
+// console.log(mergeInPlace(arr1, 3, arr2, 3));
+
+
+
+function mergeInPlace(nums1,m,nums2,n){
+    let p1=m-1;
+    let p2=n-1;
+
+    for(let i=m+n-1; i>=0; i--){
+        if(p2 < 0) break;
+        if(p1 >=0 && nums1[p1] > nums2[p2]){
+            nums1[i]=nums1[p1];
+            p1--;
         } else {
-            arr1[k]=arr2[j];
-            j--;
+            nums1[i]=nums2[p2];
+            p2--;
         }
-        k--;
     }
-
-    while(j>=0){
-        arr1[k]=arr2[j];
-        j--;
-        k--;
-    }
-
-    return arr1;
+    return nums1;
 }
 
-let arr1 = [2,4,6];
-let arr2 = [1,2,3,5,0,0,0];
 
-console.log(mergeInPlace(arr1, 3, arr2, 3));
+let nums1 = [1,2,3,0,0,0];
+mergeInPlace(nums1,3,[2,5,6],3);
+console.log(nums1);
+
