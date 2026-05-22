@@ -1,0 +1,71 @@
+let n = grid.length;
+        let m = grid[0].length;
+
+        let visited = Array.from({ length: n }, () =>
+            Array(m).fill(false)
+        );
+
+        let directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1]
+        ];
+
+        function dfs(r, c) {
+            visited[r][c] = true;
+
+            for (let [dr, dc] of directions) {
+                let nr = r + dr;
+                let nc = c + dc;
+
+                if (
+                    nr >= 0 &&
+                    nr < n &&
+                    nc >= 0 &&
+                    nc < m &&
+                    grid[nr][nc] === 1 &&
+                    !visited[nr][nc]
+                ) {
+                    dfs(nr, nc);
+                }
+            }
+        }
+
+        // Traverse boundary
+        for (let i = 0; i < n; i++) {
+            // First column
+            if (grid[i][0] === 1 && !visited[i][0]) {
+                dfs(i, 0);
+            }
+
+            // Last column
+            if (grid[i][m - 1] === 1 && !visited[i][m - 1]) {
+                dfs(i, m - 1);
+            }
+        }
+
+        for (let j = 0; j < m; j++) {
+            // First row
+            if (grid[0][j] === 1 && !visited[0][j]) {
+                dfs(0, j);
+            }
+
+            // Last row
+            if (grid[n - 1][j] === 1 && !visited[n - 1][j]) {
+                dfs(n - 1, j);
+            }
+        }
+
+        // Count unvisited land cells
+        let count = 0;
+
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < m; j++) {
+                if (grid[i][j] === 1 && !visited[i][j]) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
