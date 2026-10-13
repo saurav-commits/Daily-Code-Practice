@@ -1,7 +1,4 @@
-/**
- * @param {number[]} gain
- * @return {number}
- */
+// this will help in finding the largest altitude
 var largestAltitude = function(gain) {
     let altitude = 0;
     let maxAltitude = 0;
