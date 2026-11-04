@@ -1,0 +1,65 @@
+function minOperations(nums, x, k) {
+    const n = nums.length;
+    const vals = [...new Set(nums)].sort((a, b) => a - b);
+    const pos = new Map();
+    vals.forEach((v, i) => pos.set(v, i + 1));
+    const m = vals.length;
+    const cnt = new Int32Array(m + 1);
+    const sm = new Float64Array(m + 1);
+    const LOG = 1 << (32 - Math.clz32(m));
+
+    const update = (i, c, s) => {
+        for (; i <= m; i += i & -i) {
+            cnt[i] += c;
+            sm[i] += s;
+        }
+    };
+
+    const kth = (t) => { // smallest index with prefix count >= t
+        let p = 0;
+        for (let step = LOG; step > 0; step >>= 1) {
+            const np = p + step;
+            if (np <= m && cnt[np] < t) {
+                p = np;
+                t -= cnt[np];
+            }
+        }
+        return p + 1;
+    };
+
+    const prefix = (i) => {
+        let c = 0, s = 0;
+        for (; i > 0; i -= i & -i) {
+            c += cnt[i];
+            s += sm[i];
+        }
+        return [c, s];
+    };
+
+    const cost = new Array(n - x + 1).fill(0);
+    let total = 0;
+    for (let i = 0; i < n; i++) {
+        update(pos.get(nums[i]), 1, nums[i]);
+        total += nums[i];
+        if (i >= x) {
+            update(pos.get(nums[i - x]), -1, -nums[i - x]);
+            total -= nums[i - x];
+        }
+        if (i >= x - 1) {
+            const p = kth(Math.ceil(x / 2));
+            const med = vals[p - 1];
+            const [c, s] = prefix(p);
+            cost[i - x + 1] = med * c - s + (total - s) - med * (x - c);
+        }
+    }
+
+    let prev = new Array(n + 1).fill(0); // j = 0
+    for (let j = 1; j <= k; j++) {
+        const cur = new Array(n + 1).fill(Infinity);
+        for (let i = j * x; i <= n; i++) {
+            cur[i] = Math.min(cur[i - 1], prev[i - x] + cost[i - x]);
+        }
+        prev = cur;
+    }
+    return prev[n];
+}
