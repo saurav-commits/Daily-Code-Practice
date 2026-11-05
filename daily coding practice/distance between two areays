@@ -1,0 +1,23 @@
+/**
+ * @param {number[]} arr1
+ * @param {number[]} arr2
+ * @param {number} d
+ * @return {number}
+ */
+var findTheDistanceValue = function(arr1, arr2, d) {
+    arr2.sort((a, b) => a - b);
+    let count = 0;
+
+    for (const x of arr1) {
+        // find first index with arr2[idx] >= x - d
+        let lo = 0, hi = arr2.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >> 1;
+            if (arr2[mid] < x - d) lo = mid + 1;
+            else hi = mid;
+        }
+        // if that element is within x + d, x is "bad"
+        if (lo === arr2.length || arr2[lo] > x + d) count++;
+    }
+    return count;
+};
