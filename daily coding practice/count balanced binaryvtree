@@ -1,0 +1,10 @@
+function countBT(h) {
+    const MOD = 1000000007n;
+    let a = 1n, b = 1n; // cnt[0], cnt[1]
+    for (let i = 2; i <= h; i++) {
+        const c = (b * ((b + 2n * a) % MOD)) % MOD;
+        a = b;
+        b = c;
+    }
+    return Number(b);
+}
